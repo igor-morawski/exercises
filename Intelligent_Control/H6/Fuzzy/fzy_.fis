@@ -1,0 +1,42 @@
+[System]
+Name='fzy_'
+Type='mamdani'
+Version=2.0
+NumInputs=2
+NumOutputs=1
+NumRules=0
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='error'
+Range=[-5 5]
+NumMFs=5
+MF1='MM':'trapmf',[-100 -100 -1 -0.5]
+MF2='N':'trimf',[-0.15 0 0.15]
+MF3='PP':'trapmf',[0.5 1 100 100]
+MF4='M':'trimf',[-0.75 -0.5 0]
+MF5='P':'trimf',[0 0.5 0.75]
+
+[Input2]
+Name='velocity'
+Range=[-2 2]
+NumMFs=5
+MF1='M':'trimf',[-0.75 -0.5 0]
+MF2='N':'trimf',[-0.15 0 0.15]
+MF3='P':'trimf',[0 0.5 0.75]
+MF4='MM':'trapmf',[-100 -100 -1 -0.5]
+MF5='PP':'trapmf',[0.5 1 100 100]
+
+[Output1]
+Name='output1'
+Range=[-1 1]
+NumMFs=3
+MF1='M':'trapmf',[-200 -0.525 -0.45 -0.001]
+MF2='N':'trimf',[-0.15 0 0.15]
+MF3='P':'trapmf',[0.001 0.455 0.53 200]
+
+[Rules]

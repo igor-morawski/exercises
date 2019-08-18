@@ -1,0 +1,56 @@
+[System]
+Name='CARF2'
+Type='mamdani'
+NumInputs=2
+NumOutputs=1
+NumRules=15
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='r'
+Range=[0 1]
+NumMFs=3
+MF1='nb':'trimf',[-0.5 0 0.1]
+MF2='ze':'trimf',[0 0.1 0.4]
+MF3='pb':'trapmf',[0.1 1 10.05 21.45]
+
+[Input2]
+Name='th'
+Range=[-3.14159265358979 3.14159265358979]
+NumMFs=5
+MF1='nb':'trimf',[-4.712 -3.142 -1.571]
+MF2='nm':'trimf',[-3.142 -1.571 0]
+MF3='ze':'trimf',[-1.571 1.388e-017 1.571]
+MF4='pm':'trimf',[2.22e-016 1.571 3.142]
+MF5='pb':'trimf',[1.571 3.142 4.712]
+
+[Output1]
+Name='y'
+Range=[-1 1]
+NumMFs=5
+MF1='nb':'trimf',[-1.5 -1 -0.5]
+MF2='nm':'trimf',[-1 -0.5 0]
+MF3='ze':'trimf',[-0.5 0 0.5]
+MF4='pm':'trimf',[0 0.5 1]
+MF5='pb':'trimf',[0.5 1 1.5]
+
+[Rules]
+3 5, 1 (1) : 1 
+3 4, 5 (1) : 1 
+3 3, 5 (1) : 1 
+3 2, 1 (1) : 1 
+3 1, 1 (1) : 1 
+2 5, 2 (1) : 1 
+2 4, 4 (1) : 1 
+2 3, 4 (1) : 1 
+2 2, 2 (1) : 1 
+2 1, 2 (1) : 1 
+1 5, 3 (1) : 1 
+1 4, 3 (1) : 1 
+1 3, 3 (1) : 1 
+1 2, 3 (1) : 1 
+1 1, 3 (1) : 1 

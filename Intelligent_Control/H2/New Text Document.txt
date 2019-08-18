@@ -1,0 +1,14 @@
+[base_fitness, base_popu_real, base_popu] = GA_fitpopu(GA_initpopu(10,8,1),8,[0;10],'GA_fitfun3x');
+crossover_rate = [0.7; 0.8; 0.9; 1];
+mutate_rate = [0.04; 0.06; 0.08];
+elite = [0; 1];
+
+
+for i=1:length(crossover_rate)
+    [fitness, popu_real, popu] = GA_fitpopu(...
+        GA_newpopu(base_popu, base_fitness, 8, crossover_rate(i), mutate_rate(2), elite(1,:))...
+        ,8,[0;10],'GA_fitfunXXX');
+    best_fitness(i) = fitness(1);
+end
+CR_MBF = max(best_fitness)/sum(best_fitness)
+CR_accuracy =  

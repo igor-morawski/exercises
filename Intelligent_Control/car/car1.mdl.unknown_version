@@ -1,0 +1,730 @@
+Model {
+  Name			  "car1"
+  Version		  2.09
+  SimParamPage		  Solver
+  SampleTimeColors	  off
+  InvariantConstants	  off
+  WideVectorLines	  off
+  ShowLineWidths	  off
+  PaperOrientation	  landscape
+  PaperType		  usletter
+  PaperUnits		  inches
+  StartTime		  "0.0"
+  StopTime		  "45"
+  Solver		  ode5
+  RelTol		  "1e-3"
+  AbsTol		  "1e-3"
+  Refine		  "1"
+  MaxStep		  "0.01"
+  InitialStep		  "auto"
+  FixedStep		  "0.01"
+  MaxOrder		  5
+  OutputOption		  RefineOutputTimes
+  OutputTimes		  "[]"
+  LoadExternalInput	  off
+  ExternalInput		  "[t, u]"
+  SaveTime		  off
+  TimeSaveName		  "tout"
+  SaveState		  off
+  StateSaveName		  "xout"
+  SaveOutput		  off
+  OutputSaveName	  "yout"
+  LoadInitialState	  off
+  InitialState		  "xInitial"
+  SaveFinalState	  off
+  FinalStateName	  "xFinal"
+  LimitMaxRows		  off
+  MaxRows		  "1000"
+  Decimation		  "1"
+  AlgebraicLoopMsg	  warning
+  MinStepSizeMsg	  warning
+  UnconnectedInputMsg	  warning
+  UnconnectedOutputMsg	  warning
+  UnconnectedLineMsg	  warning
+  ConsistencyChecking	  off
+  ZeroCross		  on
+  SimulationMode	  normal
+  RTWSystemTargetFile	  "grt.tlc"
+  RTWInlineParameters	  off
+  RTWRetainRTWFile	  off
+  RTWTemplateMakefile	  "grt_vc.tmf"
+  RTWMakeCommand	  "make_rtw"
+  RTWGenerateCodeOnly	  off
+  ExtModeMexFile	  "ext_comm"
+  ExtModeBatchMode	  off
+  BlockDefaults {
+    Orientation		    right
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    NamePlacement	    normal
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+    ShowName		    on
+  }
+  AnnotationDefaults {
+    HorizontalAlignment	    center
+    VerticalAlignment	    middle
+    ForegroundColor	    black
+    BackgroundColor	    white
+    DropShadow		    off
+    FontName		    "Helvetica"
+    FontSize		    10
+    FontWeight		    normal
+    FontAngle		    normal
+  }
+  LineDefaults {
+    FontName		    "Helvetica"
+    FontSize		    9
+    FontWeight		    normal
+    FontAngle		    normal
+  }
+  System {
+    Name		    "car1"
+    Location		    [63, 77, 766, 527]
+    Open		    on
+    ScreenColor		    white
+    Block {
+      BlockType		      SubSystem
+      Name		      "Cartesian to Polar"
+      Ports		      [2, 2, 0, 0, 0]
+      Position		      [430, 251, 450, 289]
+      Orientation	      left
+      ShowPortLabels	      off
+      MaskType		      "[x,y]->[r,theta]"
+      MaskDescription	      "Tranformation from cartesian to polar\ncoordinat"
+			      "es.\nr=sqrt(x^2+y^2), theta=atan(y/x)"
+      MaskHelp		      "Unmask this block for more help."
+      MaskDisplay	      "plot(0,0,100,100,[24,20,15,20,20],[85,95,85,95,2"
+			      "0],[80,20,95,85,95,85],[70,20,20,15,20,24],[56,5"
+			      "6,55,52,50,46],[20,26,31,35,38,42])"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      none
+      MaskIconUnits	      autoscale
+      System {
+	Name			"Cartesian to Polar"
+	Location		[0, 0, 359, 206]
+	Open			off
+	ScreenColor		white
+	Block {
+	  BlockType		  Inport
+	  Name			  "x"
+	  Position		  [20, 70, 40, 90]
+	  Port			  "1"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "y"
+	  Position		  [20, 129, 40, 151]
+	  Port			  "2"
+	  PortWidth		  "-1"
+	  SampleTime		  "-1"
+	}
+	Block {
+	  BlockType		  Mux
+	  Name			  "Mux"
+	  Ports			  [2, 1, 0, 0, 0]
+	  Position		  [75, 96, 105, 129]
+	  Inputs		  "2"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "x->r"
+	  Position		  [155, 72, 260, 98]
+	  Expr			  "hypot(u[1],u[2])"
+	}
+	Block {
+	  BlockType		  Fcn
+	  Name			  "x->theta"
+	  Position		  [160, 129, 265, 151]
+	  Expr			  "atan2(u[2],u[1])"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "r"
+	  Position		  [295, 75, 315, 95]
+	  Port			  "1"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "theta"
+	  Position		  [295, 130, 315, 150]
+	  Port			  "2"
+	  OutputWhenDisabled	  held
+	  InitialOutput		  "0"
+	}
+	Line {
+	  SrcBlock		  "x->theta"
+	  SrcPort		  1
+	  DstBlock		  "theta"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "y"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "x"
+	  SrcPort		  1
+	  DstBlock		  "Mux"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "x->r"
+	  SrcPort		  1
+	  DstBlock		  "r"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Mux"
+	  SrcPort		  1
+	  Points		  [15, 0]
+	  Branch {
+	    Points		    [0, -30]
+	    DstBlock		    "x->r"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, 25]
+	    DstBlock		    "x->theta"
+	    DstPort		    1
+	  }
+	}
+	Annotation {
+	  Position		  [167, 37]
+	  VerticalAlignment	  top
+	  Text			  "Cartesian to Polar"
+	}
+      }
+    }
+    Block {
+      BlockType		      Clock
+      Name		      "Clock"
+      Position		      [160, 355, 180, 375]
+      Location		      [30, 40, 140, 75]
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant"
+      Position		      [345, 185, 365, 205]
+      Value		      "30"
+    }
+    Block {
+      BlockType		      Constant
+      Name		      "Constant1"
+      Position		      [515, 195, 535, 215]
+      Value		      "30"
+    }
+    Block {
+      BlockType		      Derivative
+      Name		      "Derivative"
+      Position		      [500, 285, 530, 305]
+      Orientation	      left
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "Fcn5"
+      Position		      [415, 102, 440, 118]
+      Expr		      "u*1000/3600"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "Fcn6"
+      Position		      [320, 162, 345, 178]
+      Expr		      "u*1000/3600"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "Fcn7"
+      Position		      [500, 252, 525, 268]
+      Orientation	      left
+      Expr		      "u/20"
+    }
+    Block {
+      BlockType		      Fcn
+      Name		      "Fcn8"
+      Position		      [560, 302, 585, 318]
+      Orientation	      left
+      Expr		      "u/20"
+    }
+    Block {
+      BlockType		      S-Function
+      Name		      "Fuzzy Logic Controller"
+      Ports		      [1, 1, 0, 0, 0]
+      Position		      [345, 254, 370, 296]
+      Orientation	      left
+      FunctionName	      "sffis"
+      Parameters	      "fismatrix"
+      MaskType		      "FIS"
+      MaskDescription	      "FIS"
+      MaskHelp		      "Fuzzy Inference System"
+      MaskPromptString	      "FIS Matrix:"
+      MaskStyleString	      "edit"
+      MaskInitialization      "fismatrix = @1;"
+      MaskDisplay	      "plot(0, -0.3, 6, -0.3, 0, 1.2, 6, 1.2, [0 "
+			      "6], [0 0], [1 2 3],[0 1 0],[2 3 4],[0 1 0],[3 "
+			      "4 5],[0 1 0])"
+      MaskIconFrame	      on
+      MaskIconOpaque	      on
+      MaskIconRotate	      none
+      MaskIconUnits	      autoscale
+      MaskValueString	      "pidf"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "Gain"
+      Position		      [175, 67, 200, 93]
+      Gain		      "90"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "Gain1"
+      Position		      [175, 102, 200, 128]
+      Gain		      "20"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "Gain2"
+      Position		      [175, 137, 200, 163]
+      Gain		      "-40"
+    }
+    Block {
+      BlockType		      Gain
+      Name		      "Gain7"
+      Position		      [265, 297, 290, 323]
+      Orientation	      left
+      Gain		      "500"
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "Integrator2"
+      Ports		      [1, 1, 0, 0, 0]
+      Position		      [360, 160, 380, 180]
+      ExternalReset	      none
+      InitialConditionSource      internal
+      InitialCondition	      "0"
+      LimitOutput	      off
+      UpperSaturationLimit      "inf"
+      LowerSaturationLimit      "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      Integrator
+      Name		      "Integrator3"
+      Ports		      [1, 1, 0, 0, 0]
+      Position		      [470, 100, 490, 120]
+      ExternalReset	      none
+      InitialConditionSource      internal
+      InitialCondition	      "200"
+      LimitOutput	      off
+      UpperSaturationLimit      "inf"
+      LowerSaturationLimit      "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+    }
+    Block {
+      BlockType		      Mux
+      Name		      "Mux"
+      Ports		      [2, 1, 0, 0, 0]
+      Position		      [390, 255, 405, 290]
+      Orientation	      left
+      Inputs		      "2"
+    }
+    Block {
+      BlockType		      Saturate
+      Name		      "Saturation4"
+      Position		      [170, 298, 200, 322]
+      Orientation	      left
+      UpperLimit	      "200"
+      LowerLimit	      "0"
+    }
+    Block {
+      BlockType		      Step
+      Name		      "Step Input"
+      Position		      [110, 70, 130, 90]
+      Time		      "0"
+      Before		      "0"
+      After		      "1"
+    }
+    Block {
+      BlockType		      Step
+      Name		      "Step Input1"
+      Position		      [110, 105, 130, 125]
+      Time		      "25"
+      Before		      "0"
+      After		      "1"
+    }
+    Block {
+      BlockType		      Step
+      Name		      "Step Input2"
+      Position		      [110, 145, 130, 165]
+      Time		      "35"
+      Before		      "0"
+      After		      "1"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum"
+      Ports		      [2, 1, 0, 0, 0]
+      Position		      [220, 115, 240, 135]
+      Inputs		      "++"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum1"
+      Ports		      [2, 1, 0, 0, 0]
+      Position		      [370, 100, 390, 120]
+      Inputs		      "++"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum2"
+      Ports		      [3, 1, 0, 0, 0]
+      Position		      [405, 146, 425, 194]
+      Inputs		      "+--"
+    }
+    Block {
+      BlockType		      Sum
+      Name		      "Sum3"
+      Ports		      [2, 1, 0, 0, 0]
+      Position		      [590, 181, 610, 214]
+      Inputs		      "++"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace1"
+      Position		      [245, 357, 295, 373]
+      VariableName	      "t"
+      Buffer		      "100000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace2"
+      Position		      [400, 212, 450, 228]
+      VariableName	      "y"
+      Buffer		      "100000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace3"
+      Position		      [640, 191, 660, 209]
+      VariableName	      "a"
+      Buffer		      "100000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace4"
+      Position		      [570, 112, 620, 128]
+      VariableName	      "a1"
+      Buffer		      "100000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace5"
+      Position		      [240, 262, 290, 278]
+      VariableName	      "u"
+      Buffer		      "100000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace6"
+      Position		      [505, 347, 555, 363]
+      VariableName	      "e"
+      Buffer		      "100000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace7"
+      Position		      [505, 387, 555, 403]
+      VariableName	      "ed"
+      Buffer		      "100000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      ToWorkspace
+      Name		      "To Workspace8"
+      Position		      [450, 62, 500, 78]
+      VariableName	      "y1"
+      Buffer		      "100000"
+      Decimation	      "1"
+      SampleTime	      "0"
+    }
+    Block {
+      BlockType		      TransferFcn
+      Name		      "Transfer Fcn4"
+      Position		      [265, 96, 355, 134]
+      Numerator		      "[4]"
+      Denominator	      "[1 2*0.7*2 4]"
+    }
+    Block {
+      BlockType		      TransferFcn
+      Name		      "Transfer Fcn5"
+      Position		      [200, 202, 300, 238]
+      Numerator		      "[4]"
+      Denominator	      "[1 2*0.7*2 4]"
+    }
+    Line {
+      SrcBlock		      "Saturation4"
+      SrcPort		      1
+      Points		      [-20, 0; 0, -50]
+      Branch {
+	Points			[0, 10]
+	DstBlock		"To Workspace5"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, -40]
+	DstBlock		"Transfer Fcn5"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Sum"
+      SrcPort		      1
+      Points		      [5, 0]
+      DstBlock		      "Transfer Fcn4"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Gain2"
+      SrcPort		      1
+      DstBlock		      "Sum"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Gain1"
+      SrcPort		      1
+      DstBlock		      "Sum"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Derivative"
+      SrcPort		      1
+      Points		      [-15, 0]
+      Branch {
+	Points			[0, 100]
+	DstBlock		"To Workspace7"
+	DstPort			1
+      }
+      Branch {
+	Points			[-15, 0]
+	DstBlock		"Cartesian to Polar"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "Fcn7"
+      SrcPort		      1
+      Points		      [-5, 0]
+      Branch {
+	DstBlock		"To Workspace6"
+	DstPort			1
+      }
+      Branch {
+	DstBlock		"Cartesian to Polar"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Sum3"
+      SrcPort		      1
+      DstBlock		      "To Workspace3"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Clock"
+      SrcPort		      1
+      DstBlock		      "To Workspace1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Step Input"
+      SrcPort		      1
+      DstBlock		      "Gain"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Step Input1"
+      SrcPort		      1
+      DstBlock		      "Gain1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Step Input2"
+      SrcPort		      1
+      Points		      [10, 0; 0, -5]
+      DstBlock		      "Gain2"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Transfer Fcn4"
+      SrcPort		      1
+      DstBlock		      "Sum1"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Gain"
+      SrcPort		      1
+      Points		      [145, 0]
+      DstBlock		      "Sum1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Fcn5"
+      SrcPort		      1
+      DstBlock		      "Integrator3"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Transfer Fcn5"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	DstBlock		"To Workspace2"
+	DstPort			1
+      }
+      Branch {
+	DstBlock		"Fcn6"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Fcn6"
+      SrcPort		      1
+      DstBlock		      "Integrator2"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Integrator2"
+      SrcPort		      1
+      DstBlock		      "Sum2"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Integrator3"
+      SrcPort		      1
+      Points		      [15, 0; 0, 10]
+      Branch {
+	Points			[0, 20; -130, 0; 0, 15]
+	DstBlock		"Sum2"
+	DstPort			1
+      }
+      Branch {
+	DstBlock		"To Workspace4"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Mux"
+      SrcPort		      1
+      DstBlock		      "Fuzzy Logic Controller"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Fcn8"
+      SrcPort		      1
+      Points		      [0, -15]
+      DstBlock		      "Derivative"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Constant"
+      SrcPort		      1
+      Points		      [10, 0; 0, -10]
+      DstBlock		      "Sum2"
+      DstPort		      3
+    }
+    Line {
+      SrcBlock		      "Sum1"
+      SrcPort		      1
+      Points		      [0, 0]
+      Branch {
+	DstBlock		"Fcn5"
+	DstPort			1
+      }
+      Branch {
+	Points			[5, -40]
+	DstBlock		"To Workspace8"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Cartesian to Polar"
+      SrcPort		      1
+      Points		      [0, 5]
+      DstBlock		      "Mux"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Cartesian to Polar"
+      SrcPort		      2
+      DstBlock		      "Mux"
+      DstPort		      2
+    }
+    Line {
+      SrcBlock		      "Gain7"
+      SrcPort		      1
+      DstBlock		      "Saturation4"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Fuzzy Logic Controller"
+      SrcPort		      1
+      Points		      [-20, 0; 0, 35]
+      DstBlock		      "Gain7"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Sum2"
+      SrcPort		      1
+      Points		      [127, 0; 0, 20]
+      Branch {
+	Points			[0, 70]
+	Branch {
+	  DstBlock		  "Fcn7"
+	  DstPort		  1
+	}
+	Branch {
+	  Points		  [43, 0]
+	  DstBlock		  "Fcn8"
+	  DstPort		  1
+	}
+      }
+      Branch {
+	DstBlock		"Sum3"
+	DstPort			1
+      }
+    }
+    Line {
+      SrcBlock		      "Constant1"
+      SrcPort		      1
+      DstBlock		      "Sum3"
+      DstPort		      2
+    }
+  }
+}
